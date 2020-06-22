@@ -1,0 +1,31 @@
+﻿<Properties StartupConfiguration="{CF8D1591-D435-4ECA-23B8-9AB93972C3C2}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Stock/Stock.cs">
+    <Files>
+      <File FileName="Assets/Scripts/PasserBy/PasserByBuildingR.cs" Line="91" Column="47" />
+      <File FileName="Assets/Scripts/PasserBy/PasserByBuildingL.cs" />
+      <File FileName="Assets/Scripts/PasserBy/PasserByManager.cs" />
+      <File FileName="Assets/Scripts/PasserBy/PasserByManagerR.cs" />
+      <File FileName="Assets/Scripts/PasserBy/PasserType.cs" />
+      <File FileName="Assets/Scripts/PasserBy/Walking.cs" />
+      <File FileName="Assets/Scripts/PasserBy/WalkingR.cs" />
+      <File FileName="Assets/Scripts/Stock/GetCompanyManager.cs" />
+      <File FileName="Assets/Scripts/BuildingManager/LandmarksHandler.cs" />
+      <File FileName="Assets/Scripts/Stock/StockManager.cs" />
+      <File FileName="Assets/Scripts/BuildingManager/BuildingStruct.cs" />
+      <File FileName="Assets/Scripts/CitizenChat/CitizenChatManager.cs" />
+      <File FileName="Assets/Scripts/CitizenChat/CitizenBuildingChat.cs" />
+      <File FileName="Assets/Scripts/Map/ChangeCountryName.cs" />
+      <File FileName="Assets/Scripts/Map/ChangeMap.cs" />
+      <File FileName="Assets/Scripts/Stock/Stock.cs" Line="225" Column="18" />
+      <File FileName="Assets/Scripts/Stock/SellBuyManager.cs" />
+      <File FileName="Assets/Scripts/News_Notice/NewsManager.cs" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="c8beffc5-e6af-4616-8896-3d1cb4026733" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
