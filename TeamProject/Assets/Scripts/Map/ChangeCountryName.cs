@@ -24,8 +24,8 @@ public class ChangeCountryName : MonoBehaviour
         else if(mapBar.value < 0.445)
         {
             countrySlider.value = 2;
-            countryNameText.text = "미국";
-            newSprite = Resources.Load("NationalFlag/usa", typeof(Sprite)) as Sprite;
+            countryNameText.text = "독일";
+            newSprite = Resources.Load("NationalFlag/germany", typeof(Sprite)) as Sprite;
             flagImage.sprite = newSprite;
         }
         else if(mapBar.value < 0.658)
@@ -45,8 +45,8 @@ public class ChangeCountryName : MonoBehaviour
         else
         {
             countrySlider.value = 5;
-            countryNameText.text = "독일";
-            newSprite = Resources.Load("NationalFlag/germany", typeof(Sprite)) as Sprite;
+            countryNameText.text = "미국";
+            newSprite = Resources.Load("NationalFlag/usa", typeof(Sprite)) as Sprite;
             flagImage.sprite = newSprite;
         }
     }

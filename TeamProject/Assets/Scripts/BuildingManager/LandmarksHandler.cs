@@ -10,12 +10,16 @@ public class LandmarksHandler : MonoBehaviour
     // Start is called before the first frame update
     public BuildingStruct[] Buildings;
 
+    public int[] countryAttractivePoint;
+    public int allCountryAttractivePoint = 0;
+
     private int selectedPanel;
     private int selectedType; //0은 랜드마크 1은 빌딩
 
     private PlayerStatManager theStat;
     private NoticeManager theNotice;
     private GetCompanyManager theGet;
+    private DateManager theDate;
 
     public GameObject detailPanel;
     public TextMeshProUGUI buildingNameText;
@@ -48,23 +52,32 @@ public class LandmarksHandler : MonoBehaviour
 
     private float tmpPrice;
     private int checkBuildPrice;
-    private int checkSynergy = 20;
+    private int SynergyPoint = 0;
+
+    bool stop = false;
 
     void Start()
     {
         theStat = FindObjectOfType<PlayerStatManager>();
         theNotice = FindObjectOfType<NoticeManager>();
         theGet = FindObjectOfType<GetCompanyManager>();
+        theDate = FindObjectOfType<DateManager>();
 
+        countryAttractivePoint = new int[5];
+        for (int i = 0; i < 5; i++)
+            countryAttractivePoint[i] = 0;
+
+        allCountryAttractivePoint = 0;
         CalcAllBuildingsAttractivePoint();
+        CalcCountryAttractivePoint();
 
-        for(int i=0; i<Buildings.Length; i++)
+        for (int i=0; i<Buildings.Length; i++)
         {
             if (i >= 0 && i <= 3){
                 Buildings[i].country = "fra";
             }
             else if (i >= 4 && i <= 7){
-                Buildings[i].country = "usa";
+                Buildings[i].country = "ger";
             }
             else if (i >= 8 && i <= 11){
                 Buildings[i].country = "aus";
@@ -73,14 +86,31 @@ public class LandmarksHandler : MonoBehaviour
                 Buildings[i].country = "kor";
             }
             else if (i >= 16 && i <= 19){
-                Buildings[i].country = "ger";
+                Buildings[i].country = "usa";
             }
         }
     }
 
     void Update()
     {
-        CalcAllBuildingsAttractivePoint();    
+        allCountryAttractivePoint = 0;
+        for (int i = 0; i < 5; i++)
+            countryAttractivePoint[i] = 0;
+        CalcAllBuildingsAttractivePoint();
+        CalcCountryAttractivePoint();
+        //StartCoroutine(delayCoroutine());
+        
+    }
+    IEnumerator delayCoroutine()
+    {
+        if (!stop)
+        {
+            stop = true;
+            yield return new WaitForSeconds(1f);
+            for (int i = 0; i < 5; i++)
+                Debug.Log(i + ">>>this is attractive point : " + countryAttractivePoint[i]);
+            stop = false;
+        }
     }
 
     public void CalcAllBuildingsAttractivePoint()
@@ -91,27 +121,62 @@ public class LandmarksHandler : MonoBehaviour
             {
                 // 1만달러 건물이면 2점
                 // 10만달러 건물이 최고점 20점
-                if (Buildings[i].buildingPrice * 2 / 10000 >= 20)
+                if ((Buildings[i].buildingPrice * 2) / 10000 >= 20)
                 {
                     checkBuildPrice = 20;
                 }
                 else
-                    checkBuildPrice = Buildings[i].buildingPrice * 2 / 10000;
+                    checkBuildPrice = Buildings[i].buildingPrice * 2 / 10000 + 1;
 
-                Buildings[i].attractivePoint = 40 * (int)Buildings[i].buildingCondition /* 40% */+
-                                                        (Buildings[i].stcokTerm / 10) /* 20% */ +
+                if (Buildings[i].hasSynergy)
+                    SynergyPoint = 20;
+                if (Buildings[i].stockTerm >= 200)
+                    Buildings[i].stockTerm = 200;
+
+                Buildings[i].attractivePoint = (40 * (int)Buildings[i].buildingCondition) /* 30% */+
+                                                        (Buildings[i].stockTerm / 10) /* 20% */ +
                                                         checkBuildPrice /* 20% */ +
-                                                        checkSynergy /* 20% */;
-                //StartCoroutine(checkPoint(i));
+                                                        SynergyPoint /* 20% */
+                                                        ;
+                //Debug.Log(i+"번째 건물 매력지수 >>" + Buildings[i].attractivePoint);
             }
         }
     }
 
-    IEnumerator checkPoint(int i)
+    public void CalcCountryAttractivePoint()
     {
-        yield return new WaitForSeconds(2f);
-        if (Buildings[i].buildingCondition * 100 < 80)
-            Debug.Log(i + " : attractive point > " + Buildings[i].attractivePoint +", "+checkBuildPrice);
+        for (int i = 0; i < Buildings.Length; i++)
+        {
+            if (i >= 0 && i <= 3)
+            {
+                if(Buildings[i].has)
+                    countryAttractivePoint[0] += Buildings[i].attractivePoint;
+            }
+            else if (i >= 4 && i <= 7)
+            {
+                if (Buildings[i].has)
+                    countryAttractivePoint[1] += Buildings[i].attractivePoint;
+            }
+            else if (i >= 8 && i <= 11)
+            {
+                if (Buildings[i].has)
+                    countryAttractivePoint[2] += Buildings[i].attractivePoint;
+            }
+            else if (i >= 12 && i <= 15)
+            {
+                if (Buildings[i].has)
+                    countryAttractivePoint[3] += Buildings[i].attractivePoint;
+            }
+            else if (i >= 16 && i <= 19)
+            {
+                if (Buildings[i].has)
+                    countryAttractivePoint[4] += Buildings[i].attractivePoint;
+            }
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            allCountryAttractivePoint += countryAttractivePoint[i];
+        }
     }
 
     public void ShowBuyPanel() {
@@ -368,7 +433,7 @@ public class LandmarksHandler : MonoBehaviour
         {
             flag = true;
         }
-        //미국 빌딩, 엔터테인먼트 주식
+        //독일 빌딩, 제약 주식
         else if(buildN >= 5 && buildN <= 7 && stockN >= 12 && stockN <=14){
             flag = true;
         }
@@ -382,7 +447,7 @@ public class LandmarksHandler : MonoBehaviour
         {
             flag = true;
         }
-        //독일 빌딩, 제약 주식
+        //미국 빌딩, 엔터 주식
         else if(buildN >= 17 && buildN <= 19 && stockN >= 6 && stockN <= 8)
         {
             flag = true;

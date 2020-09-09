@@ -39,14 +39,14 @@ public class Stock : MonoBehaviour
 
     /*주식 목록 관리*/
     public string[,] stockNamePrice = new string[15, 2]
-        { {"it1", 50.ToString()}, {"it2", 300.ToString()},
-        {"it3", 1500.ToString()}, {"cos1", 40.ToString()},
-        {"cos2", 350.ToString()}, {"cos3", 1300.ToString()},
-        {"mdic1", 60.ToString()}, {"medic2", 290.ToString()},
-        {"medic3", 900.ToString()}, {"food1", 30.ToString()},
-        {"food2", 340.ToString()}, {"food3", 1000.ToString()},
-        {"enter1", 60.ToString()}, {"enter2", 420.ToString()},
-        {"enter3", 1300.ToString()} };
+        { {"삼숭", 50.ToString()}, {"내이벌", 300.ToString()},
+        {"MC소프트", 1500.ToString()}, {"로뤠알", 40.ToString()},
+        {"샤날", 350.ToString()}, {"입상로랑", 1300.ToString()},
+        {"디쥬니", 60.ToString()}, {"마뷸스튜디오", 290.ToString()},
+        {"워너시스터즈", 900.ToString()}, {"아웃벨", 30.ToString()},
+        {"파머스", 340.ToString()}, {"울워즈", 1000.ToString()},
+        {"노바티수", 60.ToString()}, {"로쉬", 420.ToString()},
+        {"화이쟈", 1300.ToString()} };
 
     //stockNumber는 후에 외부에서 전달 예정 // ex) 신문, 쪽지등에서 특정 주식 언급시 해당 주식 번호를 전달
     //모든 주식의 가격 결정 함수, 변동가또한 offset을 통해 결정
@@ -109,7 +109,7 @@ public class Stock : MonoBehaviour
                 /*잘못 들어온 경우 offset 반만 적용*/
                     N = 1;
 
-                upDownPrice = thisStockPrice * Random.Range(1, (int)(offset+1 - (N * (int)offset/2))) / 100;
+                upDownPrice = thisStockPrice * Random.Range(1, (int)((-N+1)*(offset+1) + (N * 4))) / 100;
                 if (upDownPrice < 0)
                     upDownPrice *= -1;
                 upDownPercent = upDownPrice / thisStockPrice * 100;
@@ -144,7 +144,7 @@ public class Stock : MonoBehaviour
                 /*잘못 들어온 경우 offset 반만 적용*/
                 N = 1;
 
-            upDownPrice = thisStockPrice * Random.Range(1, (int)(offset+1 - (int)(N * offset/2))) / 100;
+            upDownPrice = thisStockPrice * Random.Range(1, (int)((-N+1)*(offset+1) + (int)(N * 4))) / 100;
             upDownPercent = upDownPrice / thisStockPrice * 100;
             thisStockPrice += upDownPrice;
 

@@ -10,7 +10,6 @@ public class GetCompanyManager : MonoBehaviour
     private StockManager theSellBuy;
     private NoticeManager theNotice;
     private LandmarksHandler theHandler;
-    private DateManager theDate;
 
     public GameObject putStockButton;
     public GameObject outStockButton;
@@ -32,14 +31,12 @@ public class GetCompanyManager : MonoBehaviour
 
     public Hashtable stockTable = new Hashtable();
     public Hashtable priceTable = new Hashtable();
-    public Hashtable termTable = new Hashtable();
 
     private int buildN;
     private int stockN;
     private int stockN1;
     private int stockN2;
     private int stockN3;
-    private bool stop;
     private double GetInPrice;
     public bool goStop;
 
@@ -78,8 +75,6 @@ public class GetCompanyManager : MonoBehaviour
                 stockTable.Remove(buildN);
             if (priceTable.ContainsKey(buildN))
                 priceTable.Remove(buildN);
-            if(termTable.ContainsKey(buildN))
-                termTable[buildN] = 0;
 
             populationMax -= 1;
             OutCompanyChoiceP.SetActive(false);
@@ -234,7 +229,6 @@ public class GetCompanyManager : MonoBehaviour
 
         stockTable.Add(buildN, stockN);
         priceTable.Add(buildN, GetInPrice);
-        termTable.Add(buildN, 1);
 
         theSellBuy.stockSc[stockN].stockGetin = true;
         theHandler.Buildings[buildN].stockIn = true;
@@ -298,33 +292,7 @@ public class GetCompanyManager : MonoBehaviour
         theSellBuy = FindObjectOfType<StockManager>();
         theNotice = FindObjectOfType<NoticeManager>();
         theHandler = FindObjectOfType<LandmarksHandler>();
-        theDate = FindObjectOfType<DateManager>();
         StockInOut = true;
         stockInOutT.text = "기업입주";
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        for(int i = 0; i < theHandler.Buildings.Length; i++)
-        {
-            if (termTable.ContainsKey(i) && (int)termTable[i] > 0) 
-            {
-                if (DateManager.activated)
-                {
-                    if(!stop && theDate.hour == 24)
-                    {
-                        theHandler.Buildings[i].stcokTerm++;
-                        termTable[i] = theHandler.Buildings[i].stcokTerm;
-                        stop = true;
-                        if (theHandler.Buildings[i].stcokTerm >= 200)
-                            theHandler.Buildings[i].stcokTerm = 200;
-                    }
-                }
-            }
-        }
-
-        if (theDate.hour == 1)
-            stop = false;
     }
 }

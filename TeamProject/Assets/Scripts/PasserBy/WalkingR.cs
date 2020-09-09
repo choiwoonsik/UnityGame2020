@@ -8,12 +8,10 @@ public class WalkingR : MonoBehaviour
     private Vector3 position;
     private int speed;
     private PasserByManager thePasser;
-    private PasserType theType;
 
     void Start()
     {
         thePasser = FindObjectOfType<PasserByManager>();
-        theType = FindObjectOfType<PasserType>();
         speed = Random.Range(250, 301);
     }
 
@@ -32,11 +30,8 @@ public class WalkingR : MonoBehaviour
             {
                 Destroy(this.gameObject);
 
-                if (thePasser.qPasserRType.Count > 0 && thePasser.citizenCount > 0 && thePasser.qPasserRCountry.Count > 0)
-                {
-                    theType.minusPersonTypeCount(thePasser.qPasserRCountry.Dequeue() ,thePasser.qPasserRType.Dequeue());
+                if (thePasser.citizenCount > 0 && thePasser.qPasserRCountry.Count > 0)
                     thePasser.citizenCount--;
-                }
             }
         }
     }

@@ -44,7 +44,7 @@ public class NewsManager : MonoBehaviour
     private float newsEffectOffset;
     private int newsAccuracy;
     private string[] fromWhom = {"운식신문", "구닥다리신문", "믿어봐신문", "구라신문", "여우신문", "상명신문", "대한민국신문", "서강신문", "세종대왕신문", "벼리신문"};
-    private int[] fromWhomAccu = {25, 30, 35, 40, 50, 60, 65, 70, 75, 85};
+    private int[] fromWhomAccu = { 100, 100, 0, 100, 100, 100, 100, 95, 95, 95};
     private bool rightEffect;
     /**
      * @brief

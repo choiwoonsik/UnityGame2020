@@ -10,11 +10,13 @@ public class PasserByManagerR : MonoBehaviour
     public GameObject passer_by_R;
     public GameObject Canvas;
 
+    private int countryNum = -1;
     private float currentTime;
     private GetCompanyManager theGet;
     private PasserByManager thePasser;
     private CitizenChatManager theChat;
     private ChangeCountryName theCountry;
+    private LandmarksHandler theHandler;
     private PasserType theType;
 
     void Start()
@@ -25,6 +27,7 @@ public class PasserByManagerR : MonoBehaviour
         theChat = FindObjectOfType<CitizenChatManager>();
         theCountry = FindObjectOfType<ChangeCountryName>();
         theType = FindObjectOfType<PasserType>();
+        theHandler = FindObjectOfType<LandmarksHandler>();
     }
 
     // Update is called once per frame
@@ -39,7 +42,7 @@ public class PasserByManagerR : MonoBehaviour
             /* 새로운 사람이 등장한다 */
             else if ((theGet.populationMax + 1) * 4 >= thePasser.citizenCount)
             {
-                currentTime = Random.Range(1, 21 - theGet.populationMax);
+                currentTime = Random.Range(4, 21 - theGet.populationMax);
 
                 var clone = Instantiate(passer_by_R, Canvas.transform);
 
@@ -49,17 +52,34 @@ public class PasserByManagerR : MonoBehaviour
                 Sprite newSprite = Resources.Load(path, typeof(Sprite)) as Sprite;
                 clone.GetComponent<Image>().sprite = newSprite;
 
-                if (img == 1 || img == 2)
+                if (theHandler.allCountryAttractivePoint == 0)
+                    countryNum = Random.Range(0, 5);
+                else
+                {
+                    while (countryNum < 0 && theHandler.allCountryAttractivePoint > 0)
+                    {
+                        if (Random.Range(0, 100) < theHandler.countryAttractivePoint[0] / theHandler.allCountryAttractivePoint * 100)
+                            countryNum = 0;
+                        else if (Random.Range(0, 100) < theHandler.countryAttractivePoint[1] / theHandler.allCountryAttractivePoint * 100)
+                            countryNum = 1;
+                        else if (Random.Range(0, 100) < theHandler.countryAttractivePoint[2] / theHandler.allCountryAttractivePoint * 100)
+                            countryNum = 2;
+                        else if (Random.Range(0, 100) < theHandler.countryAttractivePoint[3] / theHandler.allCountryAttractivePoint * 100)
+                            countryNum = 3;
+                        else if (Random.Range(0, 100) < theHandler.countryAttractivePoint[4] / theHandler.allCountryAttractivePoint * 100)
+                            countryNum = 4;
+                    }
+                }
+
+                if (img == 1 || img == 2 || img == 16)
                 {
                     clone.transform.position = new Vector3(clone.transform.position.x, Random.Range(clone.transform.position.y+10, clone.transform.position.y + 70), clone.transform.position.z);
 
                     theChat.passer_List.Add(clone);
 
                     //나라별에서 타입별로 시민수 체크
-                    theType.plusPersonTypeCount((int)theCountry.countrySlider.value-1, img);
-
-                    thePasser.qPasserRCountry.Enqueue((int)theCountry.countrySlider.value-1);
-                    thePasser.qPasserRType.Enqueue(img);
+                    theType.plusPersonCount(countryNum);
+                    thePasser.qPasserRCountry.Enqueue(countryNum);
                     thePasser.citizenCount++;
                 }
                 else
@@ -69,12 +89,11 @@ public class PasserByManagerR : MonoBehaviour
                     theChat.passer_List.Add(clone);
 
                     //나라별에서 타입별로 시민수 체크
-                    theType.plusPersonTypeCount((int)theCountry.countrySlider.value-1, img);
-
-                    thePasser.qPasserRCountry.Enqueue((int)theCountry.countrySlider.value-1);
-                    thePasser.qPasserRType.Enqueue(img);
+                    theType.plusPersonCount(countryNum);
+                    thePasser.qPasserRCountry.Enqueue(countryNum);
                     thePasser.citizenCount++;
                 }
+                countryNum = -1;
             }
         }
     }

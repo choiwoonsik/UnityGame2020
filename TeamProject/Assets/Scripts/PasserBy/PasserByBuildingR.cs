@@ -10,13 +10,13 @@ public class PasserByBuildingR : MonoBehaviour
     //건물 나오는 사람 따로 계산
 
     private float currentTime;
+    private int countryNum;
     private GetCompanyManager theGet;
     private PasserByManager thePasser;
     private LandmarksHandler theBuild;
     private CitizenChatManager theChat;
     private StockManager theStock;
     private PasserType theType;
-    private ChangeCountryName theCountry;
 
     void Start()
     {
@@ -27,7 +27,6 @@ public class PasserByBuildingR : MonoBehaviour
         theChat = FindObjectOfType<CitizenChatManager>();
         theStock = FindObjectOfType<StockManager>();
         theType = FindObjectOfType<PasserType>();
-        theCountry = FindObjectOfType<ChangeCountryName>();
     }
 
     // Update is called once per frame
@@ -46,8 +45,29 @@ public class PasserByBuildingR : MonoBehaviour
                 {
                     if (theBuild.Buildings[i].has && theBuild.Buildings[i].stockIn && Random.Range(0, 100) < theBuild.Buildings[i].attractivePoint)
                     {
-                        currentTime = Random.Range(1, 17 - theGet.populationMax);
+                        currentTime = Random.Range(1, 15 - theGet.populationMax);
                         var clone = Instantiate(passer_by_Building, Canvas.transform);
+
+                        if (i >= 0 && i <= 3)
+                        {
+                            countryNum = 0;
+                        }
+                        else if (i >= 4 && i <= 7)
+                        {
+                            countryNum = 1;
+                        }
+                        else if (i >= 8 && i <= 11)
+                        {
+                            countryNum = 2;
+                        }
+                        else if (i >= 12 && i <= 15)
+                        {
+                            countryNum = 3;
+                        }
+                        else if (i >= 16 && i <= 19)
+                        {
+                            countryNum = 4;
+                        }
 
                         int img = 0;
                         int checkN = theStock.stockType[(int)theGet.stockTable[i]];
@@ -73,14 +93,13 @@ public class PasserByBuildingR : MonoBehaviour
                         clone.GetComponent<Image>().sprite = newSprite;
 
                         //자전거
-                        if (img == 1 || img == 2)
+                        if (img == 1 || img == 2 || img == 16)
                         {
                             return;
                         }
                         //아닌거
                         else
                         {
-                            Debug.Log("img >> " + img);
                             clone.transform.position = new Vector3(theBuild.Buildings[i].GetComponent<Transform>().position.x + 30,
                                     Random.Range(clone.transform.position.y + 210, clone.transform.position.y + 390), clone.transform.position.z);
 
@@ -88,10 +107,7 @@ public class PasserByBuildingR : MonoBehaviour
                             theChat.passer_BuildNumList.Add(i);
 
                             //나라별에서 타입별로 시민수 체크
-                            theType.plusPersonTypeCount((int)theCountry.countrySlider.value-1 ,img);
-
-                            thePasser.qPasserRType.Enqueue(img);
-
+                            theType.plusPersonCount(countryNum);
                             thePasser.citizenCount++;
                         }
 
