@@ -109,7 +109,7 @@ public class Stock : MonoBehaviour
                 /*잘못 들어온 경우 offset 반만 적용*/
                     N = 1;
 
-                upDownPrice = thisStockPrice * Random.Range(1, (int)((-N+1)*(offset+1) + (N * 4))) / 100;
+                upDownPrice = thisStockPrice * Random.Range(1, (int)(offset+1 - (N * (int)offset/2))) / 100;
                 if (upDownPrice < 0)
                     upDownPrice *= -1;
                 upDownPercent = upDownPrice / thisStockPrice * 100;
@@ -144,7 +144,7 @@ public class Stock : MonoBehaviour
                 /*잘못 들어온 경우 offset 반만 적용*/
                 N = 1;
 
-            upDownPrice = thisStockPrice * Random.Range(1, (int)((-N+1)*(offset+1) + (int)(N * 4))) / 100;
+            upDownPrice = thisStockPrice * Random.Range(1, (int)(offset+1 - (int)(N * offset/2))) / 100;
             upDownPercent = upDownPrice / thisStockPrice * 100;
             thisStockPrice += upDownPrice;
 

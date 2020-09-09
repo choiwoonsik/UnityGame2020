@@ -8,10 +8,14 @@ public class Walking : MonoBehaviour
     private Vector3 position;
     private int speed;
     private PasserByManager thePasser;
+    private PasserType theType;
+    private ChangeCountryName theCountry;
 
     void Start()
     {
         thePasser = FindObjectOfType<PasserByManager>();
+        theType = FindObjectOfType<PasserType>();
+        theCountry = FindObjectOfType<ChangeCountryName>();
         /* 걸어다니는 속도 250-300사이에서 랜덤으로 설정 */
         speed = Random.Range(250, 301);
     }
@@ -32,8 +36,11 @@ public class Walking : MonoBehaviour
             {
                 Destroy(this.gameObject);
 
-                if (thePasser.citizenCount > 0 && thePasser.qPasserLCountry.Count > 0)
+                if (thePasser.qPasserLType.Count > 0 && thePasser.citizenCount > 0 && thePasser.qPasserLCountry.Count > 0)
+                {
+                    theType.minusPersonTypeCount(thePasser.qPasserLCountry.Dequeue() ,thePasser.qPasserLType.Dequeue());
                     thePasser.citizenCount--;
+                }
             }
         }
     }

@@ -32,7 +32,7 @@ public class WalkingR : MonoBehaviour
             {
                 Destroy(this.gameObject);
 
-                if (thePasser.qPasserRType.Count > 0 && thePasser.citizenCount > 0)
+                if (thePasser.qPasserRType.Count > 0 && thePasser.citizenCount > 0 && thePasser.qPasserRCountry.Count > 0)
                 {
                     theType.minusPersonTypeCount(thePasser.qPasserRCountry.Dequeue() ,thePasser.qPasserRType.Dequeue());
                     thePasser.citizenCount--;

@@ -44,7 +44,7 @@ public class NewsManager : MonoBehaviour
     private float newsEffectOffset;
     private int newsAccuracy;
     private string[] fromWhom = {"운식신문", "구닥다리신문", "믿어봐신문", "구라신문", "여우신문", "상명신문", "대한민국신문", "서강신문", "세종대왕신문", "벼리신문"};
-    private int[] fromWhomAccu = {25, 30, 35, 40, 50, 60, 65, 70, 75, 85};
+    private int[] fromWhomAccu = { 100, 100, 0, 100, 100, 100, 100, 95, 95, 95};
     private bool rightEffect;
     /**
      * @brief
@@ -195,6 +195,12 @@ public class NewsManager : MonoBehaviour
      */
     public void SetAlert()
     {
+        /* 뉴스가 10개 초과할 경우 자동 삭제 */
+        while (newsList.Count > 10)
+        {
+            newsList.RemoveAt(0);
+        }
+
         int count = 0;
 
         /* 처음부터 끝까지 안읽은 뉴스 개수를 센다 */
@@ -284,20 +290,20 @@ public class NewsManager : MonoBehaviour
                     newsEffectActivate = true;
                     newsEffectCurrentTime = 50f;
 
-                    if (false/*onlyThisType*/)
-                    {
-                        for (int i = 0; i < theStock.stockType.Length; i++)
-                        {
-                            if (theStock.stockType[i/*특정 업종 대상*/] == 0/*특정 업종대상*/)
-                            {
-                                theStock.stockSc[i].NewsEffectActivate(newsEffectOffset, newsAccuracy, rightEffect);
-                            }
-                        }
-                    }
-                    else
+                    //if (false/*onlyThisType*/)
+                    //{
+                    //    for (int i = 0; i < theStock.stockType.Length; i++)
+                    //    {
+                    //        if (theStock.stockType[i/*특정 업종 대상*/] == 0/*특정 업종대상*/)
+                    //        {
+                    //            theStock.stockSc[i].NewsEffectActivate(newsEffectOffset, newsAccuracy, rightEffect);
+                    //        }
+                    //    }
+                    //}
+                    //else
                         theStock.stockSc[newsEffectIndex].NewsEffectActivate(newsEffectOffset, newsAccuracy, rightEffect);
 
-                    //Debug.Log("뉴스 효과 시작" + newsEffectIndex + "번 주식에 " + newsEffectOffset + "만큼의 오프셋 적용");
+                    Debug.Log("뉴스 효과 시작" + newsEffectIndex + "번 주식에 " + newsEffectOffset + "만큼의 오프셋 적용");
                 }
             }
             /* 뉴스 효력 발생 */
@@ -310,7 +316,7 @@ public class NewsManager : MonoBehaviour
                 {
                     newsEffectActivate = false;
                     theStock.stockSc[newsEffectIndex].NewsEffectNotActivate();
-                    //Debug.Log("뉴스 효과 끝");
+                    Debug.Log("뉴스 효과 끝");
                 }
             }
         }

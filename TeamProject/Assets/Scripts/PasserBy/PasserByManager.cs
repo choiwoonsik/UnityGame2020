@@ -10,6 +10,8 @@ public class PasserByManager : MonoBehaviour
     public GameObject Canvas;
     public int citizenCount = 0;
     public TextMeshProUGUI CitizenCountT;
+    public Queue<int> qPasserLType = new Queue<int>();
+    public Queue<int> qPasserRType = new Queue<int>();
     public Queue<int> qPasserLCountry = new Queue<int>();
     public Queue<int> qPasserRCountry = new Queue<int>();
 
@@ -18,6 +20,7 @@ public class PasserByManager : MonoBehaviour
     private GetCompanyManager theGet;
     private CitizenChatManager theChat;
     private PasserType theType;
+    private ChangeCountryName theCountry;
     private LandmarksHandler theHandler;
 
     void Start()
@@ -27,6 +30,7 @@ public class PasserByManager : MonoBehaviour
         theGet = FindObjectOfType<GetCompanyManager>();
         theChat = FindObjectOfType<CitizenChatManager>();
         theType = FindObjectOfType<PasserType>();
+        theCountry = FindObjectOfType<ChangeCountryName>();
         theHandler = FindObjectOfType<LandmarksHandler>();
     }
 
@@ -42,8 +46,8 @@ public class PasserByManager : MonoBehaviour
             /* 새로운 사람이 등장한다 */
             else if ( (theGet.populationMax+1) * 4 >= citizenCount)
             {
-                /* 다음 사람은 4-20 초 후 등장한다 */
-                currentTime = Random.Range(4, 21 - theGet.populationMax);
+                /* 다음 사람은 1-20 초 후 등장한다 */
+                currentTime = Random.Range(1, 21 - theGet.populationMax);
                 /* Instantiate 함수를 통해 Prefab 형태로 새로운 GameObject를 만든다.
                  * 부모는 Cavas.transform으로 설정한다.
                  */
@@ -83,7 +87,9 @@ public class PasserByManager : MonoBehaviour
                     theChat.passer_List.Add(clone);
 
                     //나라별에서 타입별로 시민수 체크
-                    theType.plusPersonCount(countryNum);
+                    theType.plusPersonTypeCount(countryNum, img);
+
+                    qPasserLType.Enqueue(img);
                     qPasserLCountry.Enqueue(countryNum);
                     citizenCount++;
                 }
@@ -94,7 +100,9 @@ public class PasserByManager : MonoBehaviour
                     theChat.passer_List.Add(clone);
 
                     //나라별에서 타입별로 시민수 체크
-                    theType.plusPersonCount(countryNum);
+                    theType.plusPersonTypeCount(countryNum, img);
+
+                    qPasserLType.Enqueue(img);
                     qPasserLCountry.Enqueue(countryNum);
                     citizenCount++;
                 }

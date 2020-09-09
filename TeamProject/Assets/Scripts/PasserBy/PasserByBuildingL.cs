@@ -16,6 +16,7 @@ public class PasserByBuildingL : MonoBehaviour
     private LandmarksHandler theBuild;
     private CitizenChatManager theChat;
     private StockManager theStock;
+    private ChangeCountryName theCountry;
     private PasserType theType;
 
     void Start()
@@ -26,6 +27,7 @@ public class PasserByBuildingL : MonoBehaviour
         theBuild = FindObjectOfType<LandmarksHandler>();
         theChat = FindObjectOfType<CitizenChatManager>();
         theStock = FindObjectOfType<StockManager>();
+        theCountry = FindObjectOfType<ChangeCountryName>();
         theType = FindObjectOfType<PasserType>();
     }
 
@@ -45,7 +47,7 @@ public class PasserByBuildingL : MonoBehaviour
                 {
                     if (theBuild.Buildings[i].has && theBuild.Buildings[i].stockIn  && Random.Range(0, 100) < theBuild.Buildings[i].attractivePoint )
                     {
-                        currentTime = Random.Range(1, 15 - theGet.populationMax);
+                        currentTime = Random.Range(1, 17 - theGet.populationMax);
                         var clone = Instantiate(passer_by_Building, Canvas.transform);
 
                         if (i >= 0 && i <= 3)
@@ -105,8 +107,11 @@ public class PasserByBuildingL : MonoBehaviour
                             theChat.passer_BuildList.Add(clone);
                             theChat.passer_BuildNumList.Add(i);
 
-                            //나라별 시민수 체크
-                            theType.plusPersonCount(countryNum);
+                            //나라별에서 타입별로 시민수 체크
+                            theType.plusPersonTypeCount(countryNum, img);
+
+                            thePasser.qPasserLType.Enqueue(img);
+
                             thePasser.citizenCount++;
                         }
 

@@ -42,7 +42,7 @@ public class PasserByManagerR : MonoBehaviour
             /* 새로운 사람이 등장한다 */
             else if ((theGet.populationMax + 1) * 4 >= thePasser.citizenCount)
             {
-                currentTime = Random.Range(4, 21 - theGet.populationMax);
+                currentTime = Random.Range(1, 21 - theGet.populationMax);
 
                 var clone = Instantiate(passer_by_R, Canvas.transform);
 
@@ -78,8 +78,10 @@ public class PasserByManagerR : MonoBehaviour
                     theChat.passer_List.Add(clone);
 
                     //나라별에서 타입별로 시민수 체크
-                    theType.plusPersonCount(countryNum);
+                    theType.plusPersonTypeCount(countryNum, img);
+
                     thePasser.qPasserRCountry.Enqueue(countryNum);
+                    thePasser.qPasserRType.Enqueue(img);
                     thePasser.citizenCount++;
                 }
                 else
@@ -89,8 +91,10 @@ public class PasserByManagerR : MonoBehaviour
                     theChat.passer_List.Add(clone);
 
                     //나라별에서 타입별로 시민수 체크
-                    theType.plusPersonCount(countryNum);
+                    theType.plusPersonTypeCount(countryNum, img);
+
                     thePasser.qPasserRCountry.Enqueue(countryNum);
+                    thePasser.qPasserRType.Enqueue(img);
                     thePasser.citizenCount++;
                 }
                 countryNum = -1;
