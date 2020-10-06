@@ -32,7 +32,6 @@ public class DateManager : MonoBehaviour
     void Start()
     {
         currentTime = updateTime;
-        theBuild = FindObjectOfType<LandmarksHandler>();
     }
 
     void Update()
@@ -50,16 +49,6 @@ public class DateManager : MonoBehaviour
                 {
                     hour = 0;
                     day++; //날짜 증가
-                    for (int i = 0; i < theBuild.Buildings.Length; i++)
-                    {
-                        if (theBuild.Buildings[i].has && theBuild.Buildings[i].stockIn)
-                        {
-                            theBuild.Buildings[i].stockTerm++;
-                        }
-                        else
-                            theBuild.Buildings[i].stockTerm = 0;
-                    }
-
                     if (day > maxDays[month - 1]) //최대 일수가 넘어갈 경우 ex) 1월 32일
                     {
                         if (month < 12)

@@ -121,10 +121,6 @@ public class roulette : MonoBehaviour
                 closetIndex = i;
             }
         }
-        if (closetIndex == -1)
-        {
-            Debug.Log("거리계산 실패");
-        }
 
         resultImage.sprite = displayItemSolt[closetIndex].sprite;  //당첨된 스킨...?을 밑에 표시
         resultItemT.text = result[closetIndex] + " 당첨";

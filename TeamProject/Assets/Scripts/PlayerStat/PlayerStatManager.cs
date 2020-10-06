@@ -85,7 +85,6 @@ public class PlayerStatManager : MonoBehaviour
 
     public void playerStatOnOff()
     {
-        Debug.Log(OnOff);
         if (!OnOff)
         {
             statOnff.paleyrStatOnOff.SetActive(true);
@@ -145,7 +144,7 @@ public class PlayerStatManager : MonoBehaviour
         theHander = FindObjectOfType<LandmarksHandler>();
 
         //하트 충전을 위한 시간 받아오기
-        myAllMoney = 500000000;
+        myAllMoney = 500000;
         numberOfHarts = 5;
         playerCredit = 9;
         playerLevelUpIndex = 1000;
@@ -154,7 +153,7 @@ public class PlayerStatManager : MonoBehaviour
         stockTradeCountNum = 1;
 
         StockLimitCountText.text = "보유 주식 가능 수: " + stockLimitCount.ToString();
-        playerLevelText.text = "벼리 신용등급: " + playerCredit + "등급";
+        playerLevelText.text = "나의 신용등급: " + playerCredit + "등급";
         playerLevelUpIndexText.text = "신용등급 상승갱신 기준 :" +playerLevelUpIndex.ToString();
         playerLevelDownIndexText.text = "신용등급 하락갱신 기준 :" + playerLevelDownIndex.ToString();
 
@@ -319,7 +318,7 @@ public class PlayerStatManager : MonoBehaviour
         else
             stockLimitCount = 8;
 
-        playerLevelText.text = "벼리 신용등급: " + playerCredit + "등급";
+        playerLevelText.text = "나의 신용등급: " + playerCredit + "등급";
 
         /*플레이어레벨이 높아질수록 다음 기준선이 지수승으로 올라간다*/
         playerLevelUpIndex = playerLevelUpIndex * (int)Math.Pow(2, 10-playerCredit);
@@ -356,7 +355,7 @@ public class PlayerStatManager : MonoBehaviour
         if(stockLimitCount < 1)
             stockLimitCount = 1;
 
-        playerLevelText.text = "벼리 신용등급: " + playerCredit + "등급";
+        playerLevelText.text = "나의 신용등급: " + playerCredit + "등급";
 
         /*플레이어레벨이 높아질수록 다음 기준레벨이 지수승으로 올라간다*/
         playerLevelUpIndex = playerLevelUpIndex / (int)Math.Pow(2, 10 - playerCredit);

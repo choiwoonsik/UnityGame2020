@@ -223,22 +223,22 @@ public class BrokerManager : MonoBehaviour
     IEnumerator BrokerMinOfferEffect()
     {
         yield return new WaitUntil(() => theDate.day == 1);
-        Debug.Log("브로커 정보 영향 시작~");
+        //Debug.Log("브로커 정보 영향 시작~");ㅋ
         theStockManager.stockSc[stockN].NewsEffectActivate(-0.35f, accuracy, rightEffect);
         
         yield return new WaitUntil(() => theDate.hour == 4);
         theStockManager.stockSc[stockN].NewsEffectNotActivate();
-        Debug.Log("브로커 정보 영향 끝");
+        //Debug.Log("브로커 정보 영향 끝");
     }
 
     IEnumerator BrokerPlsOfferEffect()
     {
         yield return new WaitUntil(() => theDate.day == 1);
-        Debug.Log("브로커 정보 영향 시작~");
+        //Debug.Log("브로커 정보 영향 시작~");
         theStockManager.stockSc[stockN].NewsEffectActivate(0.35f, accuracy, rightEffect);
         
         yield return new WaitUntil(() => theDate.hour == 4);
         theStockManager.stockSc[stockN].NewsEffectNotActivate();
-        Debug.Log("브로커 정보 영향 끝!");
+        //Debug.Log("브로커 정보 영향 끝!");
     }
 }

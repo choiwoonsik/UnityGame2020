@@ -313,7 +313,6 @@ public class StockReportManager : MonoBehaviour
         }
 
         yield return new WaitUntil(() => theDate.hour == 23);
-        Debug.Log("text");
         BeforMonthCheck();
     }
 }

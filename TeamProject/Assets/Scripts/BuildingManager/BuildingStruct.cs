@@ -19,5 +19,4 @@ public class BuildingStruct : MonoBehaviour
     public float buildingCondition = 1.00f;
     //매력지수
     public int attractivePoint = 0;
-    public int stockTerm = 0;
 }

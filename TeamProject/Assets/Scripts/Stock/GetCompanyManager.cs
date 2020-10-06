@@ -6,13 +6,14 @@ using TMPro;
 
 public class GetCompanyManager : MonoBehaviour
 {
+    private DateManager theDate;
     private PlayerStatManager theStat;
     private StockManager theSellBuy;
     private NoticeManager theNotice;
     private LandmarksHandler theHandler;
 
     public GameObject putStockButton;
-    public GameObject outStockButton;
+    //public GameObject outStockButton;
 
     public GameObject GetCompanyChoiceP;
     public TextMeshProUGUI GetCompanyChoiceT;
@@ -101,30 +102,33 @@ public class GetCompanyManager : MonoBehaviour
 
         checkInOut();
 
-        //주식이 없는경우
-        if (theHandler.Buildings[buildN].has && !theHandler.Buildings[buildN].stockIn)
+        //해당 날짜에만 주식넣기 가능
+        if (theDate.day >= 0 && theDate.day <= 17)
         {
-            //주식넣을수있는 버튼 활성화
-            Color color = putStockButton.GetComponent<Image>().color;
-            color.a = 1f;
-            putStockButton.GetComponent<Image>().color = color;
+            //주식이 없는경우
+            if (theHandler.Buildings[buildN].has && !theHandler.Buildings[buildN].stockIn)
+            {
+                //주식넣을수있는 버튼 활성화
+                Color color = putStockButton.GetComponent<Image>().color;
+                color.a = 1f;
+                putStockButton.GetComponent<Image>().color = color;
 
-            Button button = putStockButton.GetComponent<Button>();
-            button.interactable = true;
+                Button button = putStockButton.GetComponent<Button>();
+                button.interactable = true;
+            }
+
+            //주식이 있는경우
+            else if (theHandler.Buildings[buildN].has && theHandler.Buildings[buildN].stockIn)
+            {
+                //주식뺄수있는 버튼 활성화
+                Color color = putStockButton.GetComponent<Image>().color;
+                color.a = 1f;
+                putStockButton.GetComponent<Image>().color = color;
+
+                Button button = putStockButton.GetComponent<Button>();
+                button.interactable = true;
+            }
         }
-
-        //주식이 있는경우
-        else if (theHandler.Buildings[buildN].has && theHandler.Buildings[buildN].stockIn)
-        {
-            //주식뺄수있는 버튼 활성화
-            Color color = putStockButton.GetComponent<Image>().color;
-            color.a = 1f;
-            putStockButton.GetComponent<Image>().color = color;
-
-            Button button = putStockButton.GetComponent<Button>();
-            button.interactable = true;
-        }
-
         else
         {
             Color color = putStockButton.GetComponent<Image>().color;
@@ -143,7 +147,7 @@ public class GetCompanyManager : MonoBehaviour
             checkEachBuilding();
             GetCompanyChoiceP.SetActive(true);
             GetCompanyChoiceT.text = "기업 유치를 위해 친히 와주셔서 감사합니다!!\n\n아래 3개의 기업 후보들 중에서 마음에 드시는 기업을 선택하여\n건물에 기업을 입주시킬 수 있습니다."
-                                        + "\n\n< Tip. 기업으로부터 회사를 입주시키기위한 보증금을 일정금액 받으며, 기업을 바꾸거나, 뺄 경우 보증금을 전액반환하여야 합니다. >";
+                                        + "\n\n< Tip. 기업으로부터 회사를 입주시키기위한 보증금을 일정금액 받으며,\n 기업을 바꾸거나, 뺄 경우 보증금을 전액반환하여야 합니다. >\n\n\n\n";
             int count = 0;
             while(count < 100)
             {
@@ -225,7 +229,8 @@ public class GetCompanyManager : MonoBehaviour
 
     public void ConfirmOk()
     {
-        theStat.myAllMoney += GetInPrice;
+        //보증금 내기
+        theStat.myAllMoney -= GetInPrice;
 
         stockTable.Add(buildN, stockN);
         priceTable.Add(buildN, GetInPrice);
@@ -292,6 +297,7 @@ public class GetCompanyManager : MonoBehaviour
         theSellBuy = FindObjectOfType<StockManager>();
         theNotice = FindObjectOfType<NoticeManager>();
         theHandler = FindObjectOfType<LandmarksHandler>();
+        theDate = FindObjectOfType<DateManager>();
         StockInOut = true;
         stockInOutT.text = "기업입주";
     }

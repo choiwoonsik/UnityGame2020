@@ -44,8 +44,6 @@ public class checkStockPriceTest : MonoBehaviour
 
     public void outStack()
     {
-        Debug.Log("=================" + m + "월 =================");
-        Debug.Log(stockStack);
         while (stockStack.Count > 0)
             Debug.Log("check : "+stockStack.Pop());
         m++;

@@ -54,8 +54,6 @@ public class LandmarksHandler : MonoBehaviour
     private int checkBuildPrice;
     private int SynergyPoint = 0;
 
-    bool stop = false;
-
     void Start()
     {
         theStat = FindObjectOfType<PlayerStatManager>();
@@ -93,26 +91,13 @@ public class LandmarksHandler : MonoBehaviour
 
     void Update()
     {
-        allCountryAttractivePoint = 0;
+        allCountryAttractivePoint = 1;
         for (int i = 0; i < 5; i++)
             countryAttractivePoint[i] = 0;
         CalcAllBuildingsAttractivePoint();
         CalcCountryAttractivePoint();
-        //StartCoroutine(delayCoroutine());
-        
     }
-    IEnumerator delayCoroutine()
-    {
-        if (!stop)
-        {
-            stop = true;
-            yield return new WaitForSeconds(1f);
-            for (int i = 0; i < 5; i++)
-                Debug.Log(i + ">>>this is attractive point : " + countryAttractivePoint[i]);
-            stop = false;
-        }
-    }
-
+    
     public void CalcAllBuildingsAttractivePoint()
     {
         for (int i = 0; i < Buildings.Length; i++)
@@ -129,17 +114,21 @@ public class LandmarksHandler : MonoBehaviour
                     checkBuildPrice = Buildings[i].buildingPrice * 2 / 10000 + 1;
 
                 if (Buildings[i].hasSynergy)
-                    SynergyPoint = 20;
-                if (Buildings[i].stockTerm >= 200)
-                    Buildings[i].stockTerm = 200;
+                    SynergyPoint = 30;
+                else
+                    SynergyPoint = 0;
 
-                Buildings[i].attractivePoint = (40 * (int)Buildings[i].buildingCondition) /* 30% */+
-                                                        (Buildings[i].stockTerm / 10) /* 20% */ +
-                                                        checkBuildPrice /* 20% */ +
-                                                        SynergyPoint /* 20% */
-                                                        ;
-                //Debug.Log(i+"번째 건물 매력지수 >>" + Buildings[i].attractivePoint);
+                if (Buildings[i].buildingCondition <= 0.1f)
+                    Buildings[i].attractivePoint = 0;
+                else
+                {
+                    Buildings[i].attractivePoint = (int)(50 * Buildings[i].buildingCondition) /* 50% */+
+                                                   checkBuildPrice /* 20% */ +
+                                                   SynergyPoint /* 30% */;   
+                }
             }
+            else
+                Buildings[i].attractivePoint = 0;
         }
     }
 
@@ -147,7 +136,7 @@ public class LandmarksHandler : MonoBehaviour
     {
         for (int i = 0; i < Buildings.Length; i++)
         {
-            if (i >= 0 && i <= 3)
+            if (i >= 1 && i <= 3)
             {
                 if(Buildings[i].has)
                     countryAttractivePoint[0] += Buildings[i].attractivePoint;
@@ -180,7 +169,6 @@ public class LandmarksHandler : MonoBehaviour
     }
 
     public void ShowBuyPanel() {
-
         buyPanel.SetActive(true);
     }
 
@@ -231,62 +219,71 @@ public class LandmarksHandler : MonoBehaviour
         selectedPanel = index;
         detailPanel.SetActive(true);
 
-        Vector3 position = Buildings[index].image.transform.position;
-        detailPanel.transform.position = new Vector3(position.x + 1500, position.y+600, position.z);
-        
-        buildingNameText.text = Buildings[index].buildingName;
-        buildingDetailText.text = Buildings[index].buildingDetail;
-        buildingLocationText.text = "위치 : " + Buildings[index].buildingLocation;
+        try
+        {
+            Vector3 position = Buildings[index].image.transform.position;
+            detailPanel.transform.position = new Vector3(position.x + 1500, position.y + 600, position.z);
 
-        if(Buildings[index].type == "b")
-        {
-            buildingPriceText.text = "가격 : " + "$ " + string.Format("{0}", Buildings[index].buildingPrice.ToString("n0"));
-            buildingRevenueText.text = "매달 예상 월세 : $ " + string.Format("{0}", Buildings[index].monthlyRevenue.ToString("n0"));
-        }
-        else
-        {
-            buildingPriceText.text = "비매품입니다.";
-            buildingRevenueText.text = "매달 예상 수익 : $ " + string.Format("{0}", Buildings[index].monthlyRevenue.ToString("n0"));
-        }
+            buildingNameText.text = Buildings[index].buildingName;
+            buildingDetailText.text = Buildings[index].buildingDetail;
+            buildingLocationText.text = "위치 : " + Buildings[index].buildingLocation;
 
-        if (!Buildings[index].has)
-        {
-            buildingConditionText.text = "";
-            buildingDetailText.text = "";
-        }
-        else if(Buildings[index].type == "b")//내가 가지고 있는 건물
-        {
-            buildingConditionText.text = "건물 상태 : " + (int)(Buildings[index].buildingCondition * 100) + "/100";
-            if (Buildings[index].stockIn)
+            if (Buildings[index].type == "b")
             {
-                buildingDetailText.text = "기업 주식 정보 제공 미완성";
-                //주식 정보에 대해서 알려주기
+                buildingPriceText.text = "가격 : " + "$ " + string.Format("{0}", Buildings[index].buildingPrice.ToString("n0"));
+                buildingRevenueText.text = "매달 예상 월세 : $ " + string.Format("{0}", Buildings[index].monthlyRevenue.ToString("n0"));
             }
             else
             {
-                buildingDetailText.text = "기업이 입주되지 않았습니다. 매월 10-17일 기업입주가 가능합니다.";
+                buildingPriceText.text = "비매품입니다.";
+                buildingRevenueText.text = "매달 예상 수익 : $ " + string.Format("{0}", Buildings[index].monthlyRevenue.ToString("n0"));
             }
-        }
 
-        Color color;
-
-        for (int i = 0; i < Buildings.Length; i++)
-        {
-            if (!Buildings[i].has)
+            if (!Buildings[index].has)
             {
-                color = Buildings[i].image.GetComponent<Image>().color;
-                color.a = 0.1f;
-                Buildings[i].image.GetComponent<Image>().color = color;
+                buildingConditionText.text = "";
+                buildingDetailText.text = "";
+            }
+            else if (Buildings[index].type == "b")//내가 가지고 있는 건물
+            {
+                buildingConditionText.text = "건물 상태 : " + (int)(Buildings[index].buildingCondition * 100) + "/100";
+                if (Buildings[index].stockIn)
+                {
+                    buildingDetailText.text = "기업 주식 정보 제공 미완성";
+                    //주식 정보에 대해서 알려주기
+                }
+                else
+                {
+                    buildingDetailText.text = "기업이 입주되지 않았습니다. 매월 10-17일 기업입주가 가능합니다.";
+                }
+            }
+
+            Color color;
+
+            for (int i = 0; i < Buildings.Length; i++)
+            {
+                if (!Buildings[i].has)
+                {
+                    color = Buildings[i].image.GetComponent<Image>().color;
+                    color.a = 0.1f;
+                    Buildings[i].image.GetComponent<Image>().color = color;
+                }
+            }
+
+            if (!Buildings[selectedPanel].has && Buildings[selectedPanel].type == "b")
+            {
+                //안산거면 구매
+                ShowBuyPanel();
+            }
+            else if (Buildings[selectedPanel].has && Buildings[selectedPanel].type == "b")
+            {
+                //산거면 관리
+                managePanel.SetActive(true);
             }
         }
-
-        if (!Buildings[selectedPanel].has && Buildings[selectedPanel].type == "b")
+        catch (Exception ex)
         {
-            ShowBuyPanel();
-        }
-        else if (Buildings[selectedPanel].has && Buildings[selectedPanel].type == "b")
-        {
-            managePanel.SetActive(true);
+            Debug.Log(ex);
         }
     }
 
@@ -427,56 +424,60 @@ public class LandmarksHandler : MonoBehaviour
     //기업 입주 후 시너지 체크
     public void SynergyCheck(int buildN, int stockN)
     {
-        bool flag = false;
-        //프랑스 빌딩, 코스메틱 주식
-        if(buildN >= 1 && buildN <= 3 && stockN >= 3 && stockN <=5)
+        try
         {
-            flag = true;
+            bool flag = false;
+            //프랑스 빌딩, 코스메틱 주식
+            if (buildN >= 1 && buildN <= 3 && stockN >= 3 && stockN <= 5)
+            {
+                flag = true;
+            }
+            //독일 빌딩, 제약 주식
+            else if (buildN >= 5 && buildN <= 7 && stockN >= 12 && stockN <= 14)
+            {
+                flag = true;
+            }
+            //호주 빌딩, 푸드 주식
+            else if (buildN >= 9 && buildN <= 11 && stockN >= 9 && stockN <= 11)
+            {
+                flag = true;
+            }
+            //한국 빌딩, 아이티 주식
+            else if (buildN >= 13 && buildN <= 15 && stockN >= 0 && stockN <= 2)
+            {
+                flag = true;
+            }
+            //미국 빌딩, 엔터 주식
+            else if (buildN >= 17 && buildN <= 19 && stockN >= 6 && stockN <= 8)
+            {
+                flag = true;
+            }
+            if (flag)
+            {
+                var clone = Instantiate(floatingText, Buildings[buildN].transform);
+                clone.GetComponent<FloatingText>().text.color = new Color(219 / 255.0f, 99 / 255.0f, 0.0f);
+                clone.GetComponent<FloatingText>().text.fontSizeMax = 100;
+                clone.GetComponent<FloatingText>().SetText("기업과 지역 이미지 일치!");
+                StartCoroutine(DelayCoroutine(buildN, Buildings[buildN].country));
+                Buildings[buildN].hasSynergy = true;
+            }
+            //시너지 효과 제거하기
+            else if (Buildings[buildN].hasSynergy)
+            {
+                Buildings[buildN].hasSynergy = false;
+                //매력 지수 반감하기
+            }
+            ClosePanel();
         }
-        //독일 빌딩, 제약 주식
-        else if(buildN >= 5 && buildN <= 7 && stockN >= 12 && stockN <=14){
-            flag = true;
-        }
-        //호주 빌딩, 푸드 주식
-        else if(buildN >= 9 && buildN <=11 && stockN >= 9 && stockN <= 11)
+        catch (Exception ex)
         {
-            flag = true;
+            Debug.Log(ex);
         }
-        //한국 빌딩, 아이티 주식
-        else if(buildN >= 13 && buildN <= 15 && stockN >= 0 && stockN <= 2)
-        {
-            flag = true;
-        }
-        //미국 빌딩, 엔터 주식
-        else if(buildN >= 17 && buildN <= 19 && stockN >= 6 && stockN <= 8)
-        {
-            flag = true;
-        }
-
-        if (flag)
-        {
-            var clone = Instantiate(floatingText, Buildings[buildN].transform);
-            clone.GetComponent<FloatingText>().text.color = new Color(219 / 255.0f, 99 / 255.0f, 0.0f);
-            clone.GetComponent<FloatingText>().text.fontSizeMax = 100;
-            clone.GetComponent<FloatingText>().SetText("기업과 지역 이미지 일치!");
-            StartCoroutine(DelayCoroutine(buildN, Buildings[buildN].country));
-
-            Buildings[buildN].hasSynergy = true;
-        }
-        //시너지 효과 제거하기
-        else if(Buildings[buildN].hasSynergy)
-        {
-            Buildings[buildN].hasSynergy = false;
-            //매력 지수 반감하기
-        }
-
-        ClosePanel();
     }
 
     IEnumerator DelayCoroutine(int buildN, String country)
     {
         yield return new WaitForSeconds(1.5f);
-
         var clone2 = Instantiate(floatingText, Buildings[buildN].transform);
         clone2.GetComponent<FloatingText>().text.color = new Color(219 / 255.0f, 99 / 255.0f, 0.0f);
         clone2.GetComponent<FloatingText>().text.fontSizeMax = 100;
@@ -536,7 +537,7 @@ public class LandmarksHandler : MonoBehaviour
 
         if(synergy_count == 3)
         {
-            int landmark_index = 0;
+            int landmark_index;
             for(landmark_index = 0; landmark_index < Buildings.Length; landmark_index++)
             {
                 if(Buildings[landmark_index].type == "l" && Buildings[landmark_index].country == country)

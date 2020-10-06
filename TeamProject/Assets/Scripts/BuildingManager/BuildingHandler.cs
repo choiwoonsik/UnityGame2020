@@ -60,7 +60,7 @@ public class BuildingHandler : BuildingStruct
                 currentTime = updateTime;
                 if(buildingCondition > 0.0f)
                 {
-                    buildingCondition -= 0.01f;
+                    buildingCondition -= 0.0005f;
                 }
                 if(buildingCondition <= 0.1f && !dirtyFlag)
                 {
