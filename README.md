@@ -6,4 +6,4 @@
 - 부동산과 주식, 미니게임을 이용하여 여러나라의 건물을 매입하고 꾸미면서 건물주의 왕이 되는 게임이다
 
 ### 구글플레이 링크
-- https://play.google.com/store/apps/details?id=com.DefaultCompany.TeamProject
+- https://play.google.com/store/apps/details?id=com.ChaeChoiGame.iwillbestockKing
