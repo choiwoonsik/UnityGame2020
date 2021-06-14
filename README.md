@@ -9,8 +9,6 @@
 
 - [https://play.google.com/store/apps/details?id=com.ChaeChoiGame.iwillbestockKing](https://play.google.com/store/apps/details?id=com.ChaeChoiGame.iwillbestockKing)
 
-![image](https://user-images.githubusercontent.com/42247724/121832255-9f3bed00-cd04-11eb-8da3-d873e12a6910.png)
-
 #### 🧑‍💻 팀 구성
 
 - 개발 2명, 기획 2명 (중반부터는 개발팀 2명으로만 진행)
@@ -28,6 +26,6 @@
 
 **프로젝트 과정 중 기록 사항**
 
-[유니티 게임 기획 및 개발 회의.pdf](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c4c44a1b-3b41-489d-9f72-64a411d341db/_____.pdf)
+[유니티 게임 기획 및 개발 회의.pdf]
 
-[유니티 미니게임 구현 및 기능 설명.pdf](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f6e75a84-899c-49b7-82a6-35edbc5d432b/_____.pdf)
+[유니티 미니게임 구현 및 기능 설명.pdf]
