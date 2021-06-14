@@ -26,6 +26,14 @@
 
 **프로젝트 과정 중 기록 사항**
 
-[유니티 게임 기획 및 개발 회의.pdf]
+[유니티 게임 기획 및 개발 회의.pdf](https://github.com/choiwoonsik/UnityGame2020/files/6645277/default.pdf)
 
-[유니티 미니게임 구현 및 기능 설명.pdf]
+[유니티 미니게임 구현 및 기능 설명.pdf](https://github.com/choiwoonsik/UnityGame2020/files/6645278/default.pdf)
+
+#### 플레이 화면
+
+<img src="https://user-images.githubusercontent.com/42247724/121832783-d9f25500-cd05-11eb-8c5d-e417c7b1806f.png" width="500">
+<img src="https://user-images.githubusercontent.com/42247724/121832785-dbbc1880-cd05-11eb-9756-475ce75c828e.png" width="500">
+<img src="https://user-images.githubusercontent.com/42247724/121832786-dc54af00-cd05-11eb-8c4f-189093d1d78d.png" width="500">
+<img src="https://user-images.githubusercontent.com/42247724/121832788-dced4580-cd05-11eb-8d05-9d74dec9bff3.png" width="500">
+<img src="https://user-images.githubusercontent.com/42247724/121832789-dd85dc00-cd05-11eb-85d3-4152fef9fa46.png" width="500">
